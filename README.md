@@ -15,7 +15,10 @@ Add margins to multiple PDFs all at once.
   - Example: 
           
         python marginPDF --margin_w 200
-    - This adds 200 pixels to the right of the pdf, since no dir_path is specified the directory is automatically the on where the script is run from (.) and margin_h is 0.
+    - **--margin_w 200**: add 200 pixels to the right of the pdf since 
+    - *no dir_path is specified*: the directory is automatically the one where the script is run from (.). Make sure that the pdfs are inside the directory where the script is run
+    - *no margin_h is specified*: no margin for height added
+    - Find the resulting pdfs inside: **dir_path/resized_pdfs**
 
 **Use case**
    - Programmed to have right margin in order to take notes on pdfs.

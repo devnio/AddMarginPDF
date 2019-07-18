@@ -4,18 +4,7 @@ from PyPDF2.pdf import PageObject
 import argparse
 import os
 
-parser = argparse.ArgumentParser(description='PDF margin size and paths.')
-parser.add_argument('--dir_path', type=str, default = ".", help='Path of directory with pdf to resize.')
-parser.add_argument('--margin_w', type=int, default = 0,  help='Width margin of new pdf.')
-parser.add_argument('--margin_h', type=int, default = 0, help='Height margin of new pdf.')
-args = parser.parse_args()
-
-# Resize path
-outputh_path = "./resized_pdfs"
-os.makedirs(outputh_path, exist_ok=True)
-
-
-def resize_pdf(filename):
+def resize_pdf(filename, out_path):
     path_file = args.dir_path + "/" + filename
     print("Open pdf file: ", path_file)
     reader = PdfFileReader(open(path_file,'rb'))
@@ -30,16 +19,27 @@ def resize_pdf(filename):
         blank_page.mergeScaledTranslatedPage(reader.getPage(i), 1, 0, 0) # page, scale, offset_x, offset_y
         writer.addPage(blank_page)
     
-    output_file = outputh_path + "/resized_" + filename
+    output_file = out_path + "/resized_" + filename
     print("Save resized pdf in: ", output_file)
     with open(output_file, 'wb') as f:
         writer.write(f)
 
 
 if __name__ == "__main__":    
+
+    parser = argparse.ArgumentParser(description='PDF margin size and paths.')
+    parser.add_argument('--dir_path', type=str, default = ".", help='Path of directory with pdf to resize.')
+    parser.add_argument('--margin_w', type=int, default = 0,  help='Width margin of new pdf.')
+    parser.add_argument('--margin_h', type=int, default = 0, help='Height margin of new pdf.')
+    args = parser.parse_args()
+
+    # Resize path
+    outputh_path = args.dir_path + "/resized_pdfs"
+    os.makedirs(outputh_path, exist_ok=True)
+
     print("Resizing pdfs in directory: " + args.dir_path)
     for filename in os.listdir(args.dir_path):
         if filename.endswith(".pdf") : 
             print("Resizing: ", filename)
-            resize_pdf(filename)
+            resize_pdf(filename, outputh_path)
 
